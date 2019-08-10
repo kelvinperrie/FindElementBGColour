@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en-nz">
+<head>
+    <title>what's your colour?</title>
+    <style>
+        body {
+        }
+        .all-content {
+            background-color: rgb(219, 131, 125);
+            height: 400px;
+        }
+        .p1 {
+            height: 100px;
+        }
+        .p2 {
+            background-color: rgb(125, 214, 219);
+            height: 100px;
+        }
+        .baby-span3 {
+            background-color: rgb(206, 125, 219);
+        }
+    </style>
+    <!-- <link rel="stylesheet" type="text/css" href="ssssss.css"> -->
+</head>
+<body>
+    This is something in the body but outside of the all-content
+    <div class="all-content">
+            This is all-content. It has a bg colour of rgb(219, 131, 125).
+            <p class="p1">
+                This is p1. It has no explicit bg colour so should be rgb(219, 131, 125).
+                <span class="baby-span1">baby-span1 - A span with no bg colour set, so will be colour of parent (rgb(219, 131, 125))</span>
+            </p>
+            <p class="p2">
+                This is p2. It has a bg colour of rgb(125, 214, 219).
+                <span class="baby-span2">baby-span2 - A span with no bg colour set, so will be colour of parent (rgb(125, 214, 219))</span>
+                <span class="baby-span3">baby-span3 - A span with its own bg colour set, so will be rgb(206, 125, 219) rather than colour of parent</span>
+            </p>
+    </div>
+    <div id="results">
+
+    </div>
+    <script type="text/javascript" src="jquery-3.3.1.min.js" ></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var results ="<br/>";
+
+            results += "using .css('backgroundColor'):"+ "<br/>";
+            results += "body bg colour is " + getBackground("body") + "<br/>";
+            results += "body all-content colour is " + getBackground(".all-content") + "<br/>";
+            results += "body bg p1 is " + getBackground(".p1") + "<br/>";
+            results += "body bg p2 is " + getBackground(".p2") + "<br/>";
+            results += "body bg baby-span1 is " + getBackground(".baby-span1") + "<br/>";
+            results += "body bg baby-span2 is " + getBackground(".baby-span2") + "<br/>";
+            results += "body bg baby-span3 is " + getBackground(".baby-span3") + "<br/>";
+
+            results += "<br/>searching for inherited bg colour:"+ "<br/>";
+            results += "body bg colour is " + getBackgroundInherited("body") + "<br/>";
+            results += "body all-content colour is " + getBackgroundInherited(".all-content") + "<br/>";
+            results += "body bg p1 is " + getBackgroundInherited(".p1") + "<br/>";
+            results += "body bg p2 is " + getBackgroundInherited(".p2") + "<br/>";
+            results += "body bg baby-span1 is " + getBackgroundInherited(".baby-span1") + "<br/>";
+            results += "body bg baby-span2 is " + getBackgroundInherited(".baby-span2") + "<br/>";
+            results += "body bg baby-span3 is " + getBackgroundInherited(".baby-span3") + "<br/>";
+
+
+            $("#results").html(results);
+        });
+
+        function getBackground(selector) {
+            var element = $(selector);
+            var backgroundColour = element.css('backgroundColor');
+            return backgroundColour;
+        }
+
+        // gets the background colour of an element; if the element has nothing set it will
+        // get the bg colour of the parent etc
+        function getBackgroundInherited(selector) {
+            var element = $(selector);
+            var backgroundColour = element.css('backgroundColor');
+            if(backgroundColour === "rgba(0, 0, 0, 0)") {
+                var parent = element.parent();
+                // stop if we've reached the document; i.e. no more elements to traverse up
+                if(parent.prop("tagName")) {
+                    backgroundColour = getBackgroundInherited(parent);
+                }
+            }
+            return backgroundColour;
+        }
+
+    </script>
+</body>
+</html>
